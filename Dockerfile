@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:24.04
 
 # Install packages
 RUN apt update && apt install -y curl wget default-jre && apt --assume-yes install python3.6
