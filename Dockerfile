@@ -1,7 +1,7 @@
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 
 # Install packages
-RUN apt update && apt install -y curl wget default-jre && apt --assume-yes install python3.6
+RUN apt update && apt install -y curl wget openjdk-17-jre-headless && apt --assume-yes install python3
 RUN apt-get install -y python3-pandas && apt-get install -y python3-joblib
 
 # Install script and software dependencies

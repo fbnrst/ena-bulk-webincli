@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: ubuntu:18.04
+From: ubuntu:22.04
 
 
 %files
@@ -7,7 +7,7 @@ From: ubuntu:18.04
 
 %post
     # Install packages
-    apt update && apt install -y curl wget default-jre && apt --assume-yes install python3.6
+    apt update && apt install -y curl wget openjdk-17-jre-headless && apt --assume-yes install python3
     apt-get install -y python3-pandas && apt-get install -y python3-joblib
 
     # Install script and software dependencies
