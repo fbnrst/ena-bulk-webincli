@@ -11,17 +11,36 @@ An example template spreadsheet has been provided (example_template_input.txt). 
 ### Installation
 
 #### Docker
-To ease in usage, the tool has been containerised using [Docker](https://www.docker.com/). The only requirement is to have Docker [installed](https://docs.docker.com/get-docker/). Once installed, run the following commands to setup:
+To ease in usage, the tool has been containerised using [Docker](https://www.docker.com/). The only requirement is to have Docker [installed](https://docs.docker.com/get-docker/).
+
+##### Option 1: Use Pre-built Image from GitHub Container Registry
+
+The easiest way to use the tool is with the pre-built Docker image:
+
+1. Pull the latest image:
+`docker pull ghcr.io/fbnrst/ena-bulk-webincli:latest`
+2. Ready to go! Run the tool using docker:
+`docker run --rm -v <LOCAL_DATA_DIRECTORY>:/workdir ghcr.io/fbnrst/ena-bulk-webincli:latest -h` (for help)
+
+##### Option 2: Build from Source
+
+Alternatively, you can build the Docker image yourself:
 
 1. Clone the repository:
-`git clone https://github.com/nadimm-rahman/ena-bulk-webincli.git && cd ena-bulk-webincli`
+`git clone https://github.com/fbnrst/ena-bulk-webincli.git && cd ena-bulk-webincli`
 2. Build the docker image:
 `docker build --tag ena-bulk-webincli .`
-3. Ready to go! Run the tool using docker using the following command:
-`docker run --rm -v <LOCAL_DATA_DIRECTORY>:/data ena-bulk-webincli -h` (for help)
+3. Ready to go! Run the tool using docker:
+`docker run --rm -v <LOCAL_DATA_DIRECTORY>:/workdir ena-bulk-webincli -h` (for help)
+
+##### Usage Notes
 
 `<LOCAL_DATA_DIRECTORY>` is recommended to be the `ena-bulk-webincli` directory on your local machine. In the example below, docker is used to submit reads to the test environment. The `/workdir` directory on the docker image is the working directory, containing the script, input spreadsheet and data files.
 
+Example using pre-built image:
+`docker run --rm -v pathto/ena-bulk-webincli:/workdir ghcr.io/fbnrst/ena-bulk-webincli:latest -u Webin-XXXX -p XXXX -g reads -s /workdir/example_template_read.txt -m submit -t`
+
+Example using locally-built image:
 `docker run --rm -v pathto/ena-bulk-webincli:/workdir ena-bulk-webincli -u Webin-XXXX -p XXXX -g reads -s /workdir/example_template_read.txt -m submit -t`
 
 Note: For data files to be submitted, relative file paths in accordance to `<LOCAL_DATA_DIRECTORY>` must be provided within the input spreadsheet. In the above example, the spreadsheet described a file `/workdir/data/Test_1.fq`, corresponding to the local file in `<LOCAL_DATA_DIRECTORY>/data/Test_1.fq`.
@@ -61,6 +80,10 @@ Submitting reads to the test environment (sequential):
 
 `python bulk_webincli.py -u Webin-XXXXX -p XXXXX -g reads -s INPUT_SPREADSHEET -m submit -t`
 
+Using pre-built Docker image:
+`docker run --rm -v localpathto/ena-bulk-webincli:/workdir ghcr.io/fbnrst/ena-bulk-webincli:latest -u Webin-XXXXX -p XXXXX -g reads -s /workdir/INPUT_SPREADSHEET -m submit -t`
+
+Using locally-built Docker image:
 `docker run --rm -v localpathto/ena-bulk-webincli:/workdir ena-bulk-webincli -u Webin-XXXXX -p XXXXX -g reads -s /workdir/INPUT_SPREADSHEET -m submit -t`
 
 `singularity run --bind localpathto/ena-bulk-webincli:/workdir ena-bulk-webincli.sif -u Webin-XXXXX -p XXXXX -g reads -s /workdir/INPUT_SPREADSHEET -m submit -t`
@@ -69,6 +92,10 @@ Submitting genomes to the production environment (in parallel with 5 cores):
 
 `python bulk_webincli.py -u Webin-XXXXX -p XXXXX -g genome -s INPUT_SPREADSHEET -m submit -pc 5`
 
+Using pre-built Docker image:
+`docker run --rm -v localpathto/ena-bulk-webincli:/workdir ghcr.io/fbnrst/ena-bulk-webincli:latest -u Webin-XXXXX -p XXXXX -g genome -s /workdir/INPUT_SPREADSHEET -m submit -pc 5`
+
+Using locally-built Docker image:
 `docker run --rm -v localpathto/ena-bulk-webincli:/workdir ena-bulk-webincli -u Webin-XXXXX -p XXXXX -g genome -s /workdir/INPUT_SPREADSHEET -m submit -pc 5`
 
 `singularity run --bind localpathto/ena-bulk-webincli:/workdir ena-bulk-webincli.sif -u Webin-XXXXX -p XXXXX -g genome -s /workdir/INPUT_SPREADSHEET -m submit -pc 5`
@@ -77,6 +104,10 @@ Validating reads, specifying an output directory (sequential):
 
 `python bulk_webincli.py -u Webin-XXXXX -p XXXXX -g reads -s INPUT_SPREADSHEET -d OUTPUT_DIRECTORY -m validate`
 
+Using pre-built Docker image:
+`docker run --rm -v localpathto/ena-bulk-webincli:/workdir ghcr.io/fbnrst/ena-bulk-webincli:latest -u Webin-XXXXX -p XXXXX -g reads -s /workdir/INPUT_SPREADSHEET -d /workdir/OUTPUT_DIRECTORY -m validate`
+
+Using locally-built Docker image:
 `docker run --rm -v localpathto/ena-bulk-webincli:/workdir ena-bulk-webincli -u Webin-XXXXX -p XXXXX -g reads -s /workdir/INPUT_SPREADSHEET -d /workdir/OUTPUT_DIRECTORY -m validate`
 
 `singularity run --bind localpathto/ena-bulk-webincli:/workdir ena-bulk-webincli.sif -u Webin-XXXXX -p XXXXX -g reads -s /workdir/INPUT_SPREADSHEET -d /workdir/OUTPUT_DIRECTORY -m validate`
